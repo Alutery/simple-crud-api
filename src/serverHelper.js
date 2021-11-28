@@ -16,8 +16,13 @@ class ServerHelper {
     }
 
     static invalidDataFormat(response) {
-        // response.statusCode = 500
+        response.statusCode = 400
         response.end('Data format is invalid')
+    }
+
+    static idInvalid(response) {
+        response.statusCode = 400
+        response.end('PersonId is invalid (not uuid)')
     }
 }
 

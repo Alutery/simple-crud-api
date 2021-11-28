@@ -7,11 +7,9 @@ const jsonBody = (request, callback) => {
 
     request.on('end', () => {
         try {
-            console.log(Buffer.concat(data).toString());
             const parsedJSON = JSON.parse(Buffer.concat(data))
             callback(null, parsedJSON)
         } catch (e) {
-            console.log(e);
             callback(e)
         }
     })

@@ -27,6 +27,7 @@ server.on('request', (req, res) => {
                             ServerHelper.invalidDataFormat(res)
                             return
                         }
+
                         const createdPerson = dbService.create(data)
                         res.statusCode = 201
                         ServerHelper.sendJSON(res, createdPerson, true)
@@ -40,6 +41,10 @@ server.on('request', (req, res) => {
         }
 
         const match = req.url.match(UUID_REGEX)
+        if (req.url.startsWith('/person') && !match) {
+            ServerHelper.idInvalid(res)
+            return
+        }
 
         // if `/person/{personId}`
         if (match) {
@@ -52,10 +57,17 @@ server.on('request', (req, res) => {
                     break
                 case 'PUT':
                     jsonBody(req, (err, data) => {
+                        if (err && err instanceof PersonNotExistError) {
+                            res.statusCode = 404
+                            res.end('Person is not found')
+                            return
+                        }
+
                         if (err) {
                             ServerHelper.invalidDataFormat(res)
                             return
                         }
+
                         const updatedPerson = dbService.update(id, data)
                         res.statusCode = 200
                         ServerHelper.sendJSON(res, updatedPerson)
