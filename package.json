@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --detectOpenHandles",
     "start:dev": "nodemon",
-    "start:prod": "webpack",
+    "start:prod": "webpack && node dist/app.js",
     "watch": "webpack --watch"
   },
   "repository": {
